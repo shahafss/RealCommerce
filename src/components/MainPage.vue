@@ -75,6 +75,7 @@ export default {
         .then((res) => {
           console.log(res.data.results);
           this.resItems = res.data.results;
+          this.$emit("response", this.resItems);
         })
         .catch((err) => {
           console.log(err);

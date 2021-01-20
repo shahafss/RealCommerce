@@ -22,19 +22,24 @@
       </div>
 
       <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <v-btn @click="value = null">Clear</v-btn>
+      <v-btn @click="refresh()">Refresh</v-btn>
+      <v-row align="center">
+        <v-col cols="12">
+          <v-autocomplete
+            v-model="value"
+            :items="items"
+            dense
+            filled
+            placeholder="Search"
+          >
+          </v-autocomplete>
+        </v-col>
+      </v-row>
     </v-app-bar>
 
     <v-main>
-      <MainPage></MainPage>
+      <MainPage ref="mainPage" @response="resItems = $event"></MainPage>
     </v-main>
   </v-app>
 </template>
@@ -46,7 +51,25 @@ export default {
   name: "App",
 
   data() {
-    return {};
+    return {
+      resItems: [],
+      value: null,
+    };
+  },
+  computed: {
+    items() {
+      return this.resItems.map((item) => {
+        return `${item.Title} - ${item.Year.substring(0, 4)}`;
+      });
+    },
+  },
+  methods: {
+    log(data) {
+      console.log("data>>", data);
+    },
+    refresh() {
+      this.$refs.mainPage.getResItems();
+    },
   },
 
   components: {
