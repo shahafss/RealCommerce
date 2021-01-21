@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import ResItem from "./ResItem";
 
 export default {
@@ -44,7 +43,7 @@ export default {
     };
   },
   created() {
-    this.getResItems();
+    this.$store.dispatch("fetchItems");
   },
   components: {
     ResItem,
@@ -57,33 +56,23 @@ export default {
         { title: "Games", count: this.games.length },
       ];
     },
+    items() {
+      return this.$store.getters.getAllItems;
+    },
     movies() {
-      return this.resItems.filter((item) => item.Type == "movie");
+      return this.items.filter((item) => item.Type == "movie");
     },
     series() {
-      return this.resItems.filter((item) => item.Type == "series");
+      return this.items.filter((item) => item.Type == "series");
     },
     games() {
-      return this.resItems.filter((item) => item.Type == "game");
+      return this.items.filter((item) => item.Type == "game");
     },
   },
 
   methods: {
-    getResItems() {
-      axios
-        .get("./assets/Vue_Response.json")
-        .then((res) => {
-          console.log(res.data.results);
-          this.resItems = res.data.results;
-          this.$emit("response", this.resItems);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
     updateDB(event) {
-      console.log("eventt>>", event);
-      axios.patch("<SERVER_URL>", event);
+      this.$store.dispatch("updateItem", event);
     },
     getCategory() {
       if (this.tab == 0) {
