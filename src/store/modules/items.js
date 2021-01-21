@@ -20,7 +20,7 @@ const mutations = {
 const actions = {
   fetchItems: ({ commit }) => {
     axios
-      .get("./assets/Vue_Response.json")
+      .get("/static/Vue_Response.json")
       .then((res) => {
         console.log(res.data.results);
         commit("STORE_ITEMS", res.data.results);

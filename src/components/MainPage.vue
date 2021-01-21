@@ -6,9 +6,15 @@
           {{ type.title }} ({{ type.count }})
         </v-tab>
       </v-tabs>
-      <v-btn @click="gridView = !gridView">{{
-        `${gridView ? "List View" : "Grid View"}`
-      }}</v-btn>
+
+      <div class="buttons">
+        <v-btn color="indigo" outlined @click="gridView = !gridView">{{
+          `${gridView ? "List View" : "Grid View"}`
+        }}</v-btn>
+        <v-btn outlined color="indigo" @click="sortDesc = !sortDesc">{{
+          `${sortDesc ? "Sort Asc" : "Sort Desc"}`
+        }}</v-btn>
+      </div>
     </div>
 
     <v-tabs-items v-model="tab">
@@ -37,9 +43,9 @@ import ResItem from "./ResItem";
 export default {
   data() {
     return {
-      resItems: [],
       tab: null,
       gridView: false,
+      sortDesc: false,
     };
   },
   created() {
@@ -57,7 +63,12 @@ export default {
       ];
     },
     items() {
-      return this.$store.getters.getAllItems;
+      const allItems = this.$store.getters.getAllItems;
+      allItems.sort((a, b) => a.Title.localeCompare(b.Title));
+      if (this.sortDesc)
+        allItems.sort((a, b) => b.Title.localeCompare(a.Title));
+
+      return allItems;
     },
     movies() {
       return this.items.filter((item) => item.Type == "movie");
@@ -95,6 +106,15 @@ export default {
     height: fit-content;
     width: 200px;
     margin-right: 1rem;
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+
+      .v-btn {
+        margin: 10px;
+      }
+    }
   }
 
   .v-tabs-items {
@@ -108,7 +128,7 @@ export default {
 
       &.grid {
         display: grid;
-        grid-template-columns: 33.33% 33.33% 33.33%;
+        grid-template-columns: 50% 50%;
       }
     }
   }

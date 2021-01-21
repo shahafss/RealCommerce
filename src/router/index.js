@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import MainPage from "../components/MainPage.vue";
+import ItemView from "../components/ItemView.vue";
 
 Vue.use(VueRouter);
 
@@ -13,8 +14,7 @@ const routes = [
   {
     path: "/item/:id",
     name: "ItemView",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../components/ItemView"),
+    component: ItemView,
   },
 ];
 

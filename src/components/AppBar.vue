@@ -15,18 +15,18 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn @click="value = null">Clear</v-btn>
-      <v-btn @click="refresh()">Refresh</v-btn>
+      <v-btn rounded color="blue" @click="value = null">Clear</v-btn>
+      <v-btn rounded color="blue" @click="refresh()">Refresh</v-btn>
 
       <v-row align="center">
         <v-col cols="12">
           <v-autocomplete
             v-model="value"
             :items="items"
-            :search-input.sync="search"
             color="white"
             placeholder="Start typing to Search"
-            prepend-icon="mdi-database-search"
+            prepend-icon="mdi-magnify"
+            hide-details
             item-text="Title"
           >
             <template v-slot:item="data">
@@ -40,9 +40,6 @@
                   <v-list-item-title>
                     {{ data.item.Title }}
                   </v-list-item-title>
-                  <v-list-item-subtitle>
-                    {{ data.item.Year }}
-                  </v-list-item-subtitle>
                 </v-list-item>
               </router-link>
             </template>
@@ -56,19 +53,21 @@
 <script>
 export default {
   props: { items: Array },
+  data() {
+    return {
+      value: null,
+    };
+  },
   methods: {
-    customFilter() {
-      return ["Title", "Year"];
-    },
-    log(data) {
-      console.log("data>>", data);
-    },
     refresh() {
-      console.log("items>>", this.items);
-      // this.$refs.mainPage.getResItems();
+      this.$store.dispatch("fetchItems");
     },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.v-btn {
+  margin: 5px;
+}
+</style>

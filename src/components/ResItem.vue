@@ -22,7 +22,7 @@
               </div>
             </router-link>
 
-            <div style="width: 100%;">
+            <div class="item-content">
               <v-text-field
                 v-model="title"
                 outlined
@@ -96,10 +96,14 @@ export default {
         }
       }
     }
-    .item-year {
-      border: 1px solid #a5a5a5;
-      border-radius: 4px;
-      padding: 10px;
+    .item-content {
+      width: 100%;
+
+      .item-year {
+        border: 1px solid #a5a5a5;
+        border-radius: 4px;
+        padding: 10px;
+      }
     }
   }
 }
